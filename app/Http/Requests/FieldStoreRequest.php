@@ -6,16 +6,16 @@ use App\Enums\FieldTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class FieldRequest extends FormRequest
+class FieldStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class FieldRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => 'required|string|max:255',
@@ -37,10 +37,10 @@ class FieldRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'type' => 'Valid values are `date`, `number`, `string` and `boolean`',
+            'type' => 'Valid values for type field are: `date`, `number`, `string` and `boolean`',
         ];
     }
 }

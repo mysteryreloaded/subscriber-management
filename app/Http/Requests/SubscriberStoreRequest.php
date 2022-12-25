@@ -3,19 +3,17 @@
 namespace App\Http\Requests;
 
 use App\Enums\SubscriberStateEnum;
-use App\Models\Subscriber;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
-class SubscriberRequest extends FormRequest
+class SubscriberStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -27,10 +25,9 @@ class SubscriberRequest extends FormRequest
      */
     public function rules()
     {
-        $email = $this->request->get('email');
         return [
             'name' => 'required|string|max:255',
-            'email' => ['required', 'email', 'max:255', Rule::unique(Subscriber::TABLE)->ignore($email, 'email')],
+            'email' => 'required|email|max:255|unique:subscribers,email',
             'state' => ['required', new Enum(SubscriberStateEnum::class)],
         ];
     }
@@ -40,10 +37,10 @@ class SubscriberRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'state' => 'Valid values are `active`, `unsubscribed`, `junk`, `bounced` and `unconfirmed`',
+            'state' => 'Valid values for state field are: `active`, `unsubscribed`, `junk`, `bounced` and `unconfirmed`',
         ];
     }
 }

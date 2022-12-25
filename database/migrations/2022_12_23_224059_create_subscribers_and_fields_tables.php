@@ -30,8 +30,8 @@ return new class extends Migration
         });
 
         Schema::create('field_subscriber', function (Blueprint $table) {
-            $table->foreignId('field_id')->constrained();
-            $table->foreignId('subscriber_id')->constrained();
+            $table->foreignId('field_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('subscriber_id')->constrained()->cascadeOnDelete();
         });
     }
 

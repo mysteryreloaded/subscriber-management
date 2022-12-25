@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SubscriberRequest;
+use App\Http\Requests\SubscriberStoreRequest;
+use App\Http\Requests\SubscriberUpdateRequest;
 use App\Http\Resources\SubscriberResource;
 use App\Models\Subscriber;
 use Illuminate\Http\JsonResponse;
@@ -20,7 +21,7 @@ class SubscribersController extends Controller
         return response()->json(['success' => true, 'data' => new SubscriberResource($subscriber)]);
     }
 
-    public function store(SubscriberRequest $request): JsonResponse
+    public function store(SubscriberStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
         (new Subscriber())->fill($data)->save();
@@ -28,7 +29,7 @@ class SubscribersController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function update(SubscriberRequest $request, Subscriber $subscriber): JsonResponse
+    public function update(SubscriberUpdateRequest $request, Subscriber $subscriber): JsonResponse
     {
         $data = $request->validated();
         $subscriber->update($data);
