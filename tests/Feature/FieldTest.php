@@ -14,13 +14,11 @@ class FieldTest extends TestCase
     private const TEST_ID = 1;
     private const TEST_DATA = [
         'title' => 'Field test case 1',
-        'value' => 1,
         'type' => 'number',
     ];
     private const TEST_DATA_WITH_ID = [
         'id' => self::TEST_ID,
         'title' => 'Field test case 1',
-        'value' => 1,
         'type' => 'number',
     ];
 
@@ -77,7 +75,6 @@ class FieldTest extends TestCase
             ->assertJsonFragment(
                 [
                     'title' => 'Company',
-                    'value' => 'First company',
                     'type' => 'string',
                 ],
             );
@@ -109,7 +106,6 @@ class FieldTest extends TestCase
                 [
                     'id' => 1,
                     'title' => 'New title',
-                    'value' => 'First company',
                     'type' => 'string',
                 ]
             );
@@ -133,7 +129,6 @@ class FieldTest extends TestCase
                 [
                     'id' => 1,
                     'title' => 'Company',
-                    'value' => 'First company',
                     'type' => 'string',
                 ],
             );

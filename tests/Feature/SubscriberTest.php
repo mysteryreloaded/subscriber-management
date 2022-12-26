@@ -56,7 +56,7 @@ class SubscriberTest extends TestCase
     public function test_subscriber_show()
     {
         /** Assert that given data does not exist */
-        $this->getJson(route('subscriber.show', ['subscriber' => self::TEST_EMAIL]))
+        $this->getJson(route('subscriber.show', ['subscriber' => 1]))
             ->assertNotFound()
             ->assertJsonMissing([self::TEST_DATA]);
 
@@ -64,7 +64,7 @@ class SubscriberTest extends TestCase
         $this->seed(InitDataSeeder::class);
 
         /** Assert seeded data exists when 'show' endpoint is triggered */
-        $this->getJson(route('subscriber.show', ['subscriber' => self::TEST_EMAIL]))
+        $this->getJson(route('subscriber.show', ['subscriber' => 1]))
             ->assertOk()
             ->assertJsonStructure(['success', 'data'])
             ->assertJsonFragment(
@@ -84,7 +84,7 @@ class SubscriberTest extends TestCase
     public function test_subscriber_update()
     {
         /** Assert that given data does not exist */
-        $this->getJson(route('subscriber.update', ['subscriber' => self::TEST_EMAIL]))
+        $this->getJson(route('subscriber.update', ['subscriber' => 1]))
             ->assertNotFound()
             ->assertJsonMissing([self::TEST_DATA]);
 
@@ -92,10 +92,10 @@ class SubscriberTest extends TestCase
         $this->seed(InitDataSeeder::class);
 
         /** Assert seeded data is updated when 'update' endpoint is triggered */
-        $this->put(route('subscriber.update', ['subscriber' => self::TEST_EMAIL]), ['name' => 'New name'])
+        $this->put(route('subscriber.update', ['subscriber' => 1]), ['name' => 'New name'])
             ->assertOk();
 
-        $this->getJson(route('subscriber.show', ['subscriber' => self::TEST_EMAIL]))
+        $this->getJson(route('subscriber.show', ['subscriber' => 1]))
             ->assertOk()
             ->assertJsonStructure(['success', 'data'])
             ->assertJsonFragment(
@@ -118,7 +118,7 @@ class SubscriberTest extends TestCase
         $this->seed(InitDataSeeder::class);
 
         /** Assert seeded data exists when 'show' endpoint is triggered */
-        $this->getJson(route('subscriber.show', ['subscriber' => self::TEST_EMAIL]))
+        $this->getJson(route('subscriber.show', ['subscriber' => 1]))
             ->assertOk()
             ->assertJsonStructure(['success', 'data'])
             ->assertJsonFragment(
@@ -130,7 +130,7 @@ class SubscriberTest extends TestCase
             );
 
         /** Assert OK after deleting a subscriber */
-        $this->delete(route('subscriber.destroy', ['subscriber' => self::TEST_EMAIL]))
+        $this->delete(route('subscriber.destroy', ['subscriber' => 1]))
             ->assertOk();
 
         /** Assert subscriber with same email does not exist */

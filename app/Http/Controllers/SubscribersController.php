@@ -39,16 +39,20 @@ class SubscribersController extends Controller
 
     private function handleSave(array $data, Subscriber $subscriber): void
     {
-        $fields = $data['fields'];
-        unset($data['fields']);
+        $subscriber->fill($data)->save();
+        $fieldsForSync = [];
 
-        /** Make an array that can be accepted by sync() function. Example result: field_id => ['value' => 'some value...'] */
-        $fieldsForSync = array_combine(array_column($fields, 'id'), array_column($fields, 'value'));
-        foreach ($fieldsForSync as $id => $value) {
-            $fieldsForSync[$id] = ['value' => $value];
+        if (isset($data['fields'])) {
+            $fields = $data['fields'];
+            unset($data['fields']);
+
+            /** Make an array that can be accepted by sync() function. Example result: field_id => ['value' => 'some value...'] */
+            $fieldsForSync = array_combine(array_column($fields, 'id'), array_column($fields, 'value'));
+            foreach ($fieldsForSync as $id => $value) {
+                $fieldsForSync[$id] = ['value' => $value];
+            }
         }
 
-        $subscriber->fill($data)->save();
         $subscriber->fields()->sync($fieldsForSync);
     }
 

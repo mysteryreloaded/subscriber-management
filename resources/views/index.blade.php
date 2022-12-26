@@ -28,7 +28,6 @@
                 :fields-data="{{ json_encode($fields) }}"
                 :state-options="{{ json_encode($stateOptions) }}"
                 :type-options="{{ json_encode($typeOptions) }}"
-                :field-options="{{ json_encode($fieldOptions) }}"
                 :routes="{{ json_encode($routes) }}"
             ></page-index>
         </div>

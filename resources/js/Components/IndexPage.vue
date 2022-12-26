@@ -77,7 +77,7 @@
                                             <option v-for="option in this.stateOptions">{{ option }}</option>
                                         </select>
                                     </div>
-                                    <div class="col-span-6 mb-48">
+                                    <div class="col-span-6">
                                         <label id="fields" class="block font-medium text-gray-700">Fields</label>
                                         <Multiselect
                                             v-model="subscriberForm.fields"
@@ -92,11 +92,17 @@
                                         ></Multiselect>
                                         <div class="col-span-6 mt-5" v-for="(field, index) in subscriberForm.fields">
                                             <label :for="field.title" class="block font-medium text-gray-700">{{ field.title }}</label>
-                                            <input v-if="field.type !== 'boolean'" v-model="subscriberForm.fields[index].pivot.value" :type="field.type === 'string' ? 'text' : field.type" :name="field.title" :id="field.title" autocomplete="name" class="input-field" />
-                                            <select v-else v-model="subscriberForm.fields[index].pivot.value" :name="field.title" :id="field.title" class="input-field">
+                                            <input
+                                                v-if="field.type !== 'boolean'"
+                                                v-model="subscriberForm.fields[index].value"
+                                                :type="field.type === 'string' ? 'text' : field.type" :name="field.title"
+                                                :id="field.title"
+                                                class="input-field"
+                                            />
+                                            <select v-else v-model="subscriberForm.fields[index].value" :name="field.title" :id="field.title" class="input-field">
                                                 <option disabled selected value> -- select an option -- </option>
-                                                <option :value="true">Yes</option>
-                                                <option :value="false">No</option>
+                                                <option :value="'true'">Yes</option>
+                                                <option :value="'false'">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -131,7 +137,7 @@
             </template>
             <template #footer>
                 <div :class="isEditMode ? 'flex justify-between' : 'flex justify-end'">
-                    <button class="red-3d-button mr-3" v-show="isEditMode">Delete</button>
+                    <button class="red-3d-button mr-3" v-show="isEditMode" @click.prevent="destroy()">Delete</button>
                     <button class="blue-3d-button" type="submit" @click.prevent="submit()">Save</button>
                 </div>
             </template>
@@ -177,12 +183,6 @@ export default {
                 return [];
             }
         },
-        fieldOptions: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
     },
     data() {
         return {
@@ -203,9 +203,9 @@ export default {
             },
             fieldForm: {
                 title: null,
-                value: null,
                 type: null,
-            }
+            },
+            fieldOptions: this.fieldsData
         }
     },
     computed: {
@@ -219,19 +219,35 @@ export default {
             let routePrefix = this.modalData.subscriber ? 'sub-' : 'field-';
             let submitUrl = this.isEditMode ? this.routes[routePrefix + 'update'].replace('_ID_', this.modalData.id) : this.routes[routePrefix + 'store'];
 
-            formData['_method'] = 'PUT';
-            let response = await Repository.postWithFullResponse(submitUrl, formData);
-            if (typeof response.data.success === 'undefined') {
-
+            if (this.isEditMode) {
+                formData['_method'] = 'PUT';
             }
+
+            await Repository.postWithFullResponse(submitUrl, formData);
+            await this.update(routePrefix);
+
+            this.closeModal();
+        },
+        async destroy() {
+            let routePrefix = 'field-';
+            if (this.modalData.subscriber) {
+                routePrefix = 'sub-';
+            }
+
+            let submitUrl = this.routes[routePrefix + 'destroy'].replace('_ID_', this.modalData.id);
+            await Repository.postWithFullResponse(submitUrl, {_method: 'DELETE'});
+            await this.update(routePrefix);
+
+            this.closeModal();
+        },
+        async update(routePrefix) {
             let updated = await Repository.get(this.routes[routePrefix + 'index']);
             if (this.modalData.subscriber) {
                 this.subscribers = updated.data.data;
             } else {
                 this.fields = updated.data.data;
+                this.fieldOptions = updated.data.data;
             }
-
-            this.closeModal();
         },
         showModalFor(resource, id) {
             if (resource !== 'subscriber' && resource !== 'field') {
@@ -242,24 +258,33 @@ export default {
             this.modalData.name = isEditMode ? `Edit ${resource}` : `Create ${resource}`;
             this.modalData.id = isEditMode ? id : null;
             if (isEditMode && this.modalData.subscriber) {
-                let subscriber = this.subscribers.find(sub => {
+                let subscriber = _.cloneDeep(this.subscribers.find(sub => {
                     return sub.id === this.modalData.id;
-                });
+                }));
+                console.log(this.subscriberForm);
+                console.log(subscriber, subscriber.email);
                 this.subscriberForm.name = subscriber.name;
                 this.subscriberForm.email = subscriber.email;
                 this.subscriberForm.state = subscriber.state;
                 this.subscriberForm.fields = subscriber.fields;
+                console.log(this.subscriberForm);
             } else if (isEditMode && !this.modalData.subscriber) {
                 let field = this.fields.find(f => {
                     return f.id === this.modalData.id;
                 });
-                this.fieldForm.name = field.name;
-                this.fieldForm.email = field.email;
+                this.fieldForm.title = field.title;
+                this.fieldForm.type = field.type;
             }
             this.showModal = true;
         },
         closeModal() {
             if (this.modalData.subscriber) {
+                this.subscriberForm.name = null;
+                this.subscriberForm.email = null;
+                this.subscriberForm.state = null;
+                this.subscriberForm.fields.forEach((field, index) => {
+                    this.subscriberForm.fields[index].value = null;
+                });
                 this.subscriberForm = {
                     name: null,
                     email: null,

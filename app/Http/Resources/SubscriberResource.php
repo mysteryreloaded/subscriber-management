@@ -27,14 +27,20 @@ class SubscriberResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return [
+        $items = [
             'id' => $this->id,
             'email' => $this->email,
             'name' => $this->name,
             'state' => $this->state,
-            'fields' => FieldResource::collection($this->fields),
+            'fields' => $this->fields,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
+
+        foreach ($items['fields'] as $key => $field) {
+            $items['fields'][$key]['value'] = $field->pivot->value;
+        }
+
+        return $items;
     }
 }

@@ -35,8 +35,10 @@ body {
     display: block;
 }
 
-.mb-48 {
-    margin-bottom: 12rem;
+.scrollable {
+    overflow-y: auto;
+    height: 100%;
+    max-height: 80vh;
 }
 
 @responsive {
@@ -45,7 +47,7 @@ body {
     }
 }
 
-form input {
+form input, form select {
     box-sizing: border-box;
     padding-left: 10px;
 }

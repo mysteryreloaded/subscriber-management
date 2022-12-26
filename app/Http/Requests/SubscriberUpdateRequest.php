@@ -32,6 +32,8 @@ class SubscriberUpdateRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'email' => ['sometimes', 'email', 'max:255', Rule::unique(Subscriber::TABLE)->ignore($email, 'email')],
             'state' => ['sometimes', new Enum(SubscriberStateEnum::class)],
+            'fields' => 'array',
+            'fields.*' => 'required|distinct',
         ];
     }
 

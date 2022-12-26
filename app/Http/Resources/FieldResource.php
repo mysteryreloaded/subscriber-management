@@ -30,7 +30,6 @@ class FieldResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'type' => $this->type,
-            'subscribers' => SubscriberResource::collection($this->subscribers),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

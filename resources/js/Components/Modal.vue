@@ -16,7 +16,7 @@ export default {
                         <button @click="$emit('close')">X</button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body scrollable">
                         <slot name="body">default body</slot>
                     </div>
 
