@@ -6,6 +6,7 @@ use App\Enums\FieldTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 class Field extends Model
 {
@@ -32,6 +33,14 @@ class Field extends Model
 
     public function subscribers(): BelongsToMany
     {
-        return $this->belongsToMany(Subscriber::class);
+        return $this->belongsToMany(Subscriber::class)->withPivot('value');
+    }
+
+    public static function toOptions(): Collection
+    {
+        $fields = self::all();
+        foreach ($fields as $field) {
+            $field->value = '';
+        }
     }
 }

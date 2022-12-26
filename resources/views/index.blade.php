@@ -22,6 +22,15 @@
         @vite('resources/js/app.js')
     </head>
     <body class="antialiased">
-        <div id="app"></div>
+        <div id="app">
+            <page-index
+                :subscribers-data="{{ json_encode($subscribers) }}"
+                :fields-data="{{ json_encode($fields) }}"
+                :state-options="{{ json_encode($stateOptions) }}"
+                :type-options="{{ json_encode($typeOptions) }}"
+                :field-options="{{ json_encode($fieldOptions) }}"
+                :routes="{{ json_encode($routes) }}"
+            ></page-index>
+        </div>
     </body>
 </html>

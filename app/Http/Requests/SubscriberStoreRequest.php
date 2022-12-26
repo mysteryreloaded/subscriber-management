@@ -29,6 +29,8 @@ class SubscriberStoreRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:subscribers,email',
             'state' => ['required', new Enum(SubscriberStateEnum::class)],
+            'fields' => 'array',
+            'fields.*' => 'required|distinct',
         ];
     }
 

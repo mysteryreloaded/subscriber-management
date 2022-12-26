@@ -5,7 +5,11 @@ module.exports = {
         "./resources/**/*.js",
     ],
     theme: {
-        extend: {},
+        extend: {
+            flex: {
+                '1-33': '1 1 33%',
+            }
+        },
     },
     plugins: [],
 }

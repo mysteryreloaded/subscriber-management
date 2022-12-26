@@ -10,7 +10,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property int $id
  * @property string $title
- * @property string $value
  * @property string $type
  * @property string $created_at
  * @property string $updated_at
@@ -28,10 +27,12 @@ class FieldResource extends JsonResource
     public function toArray($request): array
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
-            'value' => $this->value,
             'type' => $this->type,
-            'subscribers' => $this->subscribers,
+            'subscribers' => SubscriberResource::collection($this->subscribers),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\SubscribersController;
+use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/{anyPath}', [WebController::class, 'index'])->where('anyPath', '.*')->name('home');

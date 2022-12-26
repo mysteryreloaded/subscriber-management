@@ -32,6 +32,6 @@ class Subscriber extends Model
 
     public function fields(): BelongsToMany
     {
-        return $this->belongsToMany(Field::class);
+        return $this->belongsToMany(Field::class)->withPivot('value');
     }
 }

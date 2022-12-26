@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->id();
@@ -24,7 +24,6 @@ return new class extends Migration
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('value');
             $table->enum('type', ['date', 'number', 'string', 'boolean']);
             $table->timestamps();
         });
@@ -32,6 +31,7 @@ return new class extends Migration
         Schema::create('field_subscriber', function (Blueprint $table) {
             $table->foreignId('field_id')->constrained()->cascadeOnDelete();
             $table->foreignId('subscriber_id')->constrained()->cascadeOnDelete();
+            $table->string('value');
         });
     }
 
@@ -40,7 +40,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('field_subscriber');
         Schema::dropIfExists('fields');

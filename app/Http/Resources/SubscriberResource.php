@@ -28,10 +28,13 @@ class SubscriberResource extends JsonResource
     public function toArray($request): array
     {
         return [
+            'id' => $this->id,
             'email' => $this->email,
             'name' => $this->name,
             'state' => $this->state,
-            'fields' => $this->fields,
+            'fields' => FieldResource::collection($this->fields),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

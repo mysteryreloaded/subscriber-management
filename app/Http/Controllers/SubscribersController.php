@@ -24,7 +24,7 @@ class SubscribersController extends Controller
     public function store(SubscriberStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
-        (new Subscriber())->fill($data)->save();
+        $this->handleSave($data, new Subscriber());
 
         return response()->json(['success' => true]);
     }
@@ -32,9 +32,24 @@ class SubscribersController extends Controller
     public function update(SubscriberUpdateRequest $request, Subscriber $subscriber): JsonResponse
     {
         $data = $request->validated();
-        $subscriber->update($data);
+        $this->handleSave($data, $subscriber);
 
         return response()->json(['success' => true]);
+    }
+
+    private function handleSave(array $data, Subscriber $subscriber): void
+    {
+        $fields = $data['fields'];
+        unset($data['fields']);
+
+        /** Make an array that can be accepted by sync() function. Example result: field_id => ['value' => 'some value...'] */
+        $fieldsForSync = array_combine(array_column($fields, 'id'), array_column($fields, 'value'));
+        foreach ($fieldsForSync as $id => $value) {
+            $fieldsForSync[$id] = ['value' => $value];
+        }
+
+        $subscriber->fill($data)->save();
+        $subscriber->fields()->sync($fieldsForSync);
     }
 
     public function destroy(Subscriber $subscriber): JsonResponse

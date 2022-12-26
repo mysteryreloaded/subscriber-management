@@ -16,8 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('field', FieldsController::class, ['except' => ['create', 'edit']]);
-Route::resource('subscriber', SubscribersController::class, ['except' => ['create', 'edit']])->parameters(
-    [
-        'subscriber' => 'subscriber:email'
-    ]
-);
+Route::resource('subscriber', SubscribersController::class, ['except' => ['create', 'edit']]);

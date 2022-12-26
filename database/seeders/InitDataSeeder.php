@@ -31,25 +31,22 @@ class InitDataSeeder extends Seeder
         $fieldsData = [
             [
                 'title' => 'Company',
-                'value' => 'First company',
                 'type' => 'string',
             ],
             [
                 'title' => 'Age',
-                'value' => 28,
                 'type' => 'number',
             ],
         ];
+
+        foreach ($fieldsData as $row) {
+            $field = new Field();
+            $field->fill($row)->save();
+        }
 
         foreach ($subscribersData as $row) {
             (new Subscriber())->fill($row)->save();
         }
 
-        $subscribers = Subscriber::all()->pluck('id');
-        foreach ($fieldsData as $row) {
-            $field = new Field();
-            $field->fill($row)->save();
-            $field->subscribers()->attach($subscribers);
-        }
     }
 }
