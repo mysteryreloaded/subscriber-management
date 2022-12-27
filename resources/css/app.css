@@ -50,6 +50,10 @@ body {
     @apply text-gray-600 font-bold text-center w-full;
 }
 
+.table-body-row {
+    @apply border px-4 py-2 hover:bg-gray-200;
+}
+
 form input, form select {
     box-sizing: border-box;
     padding-left: 10px;
@@ -71,7 +75,6 @@ form input::placeholder {
 
 .table-mobile {
     overflow-x: auto;
-    display: block;
 }
 
 @responsive {

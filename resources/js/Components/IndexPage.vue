@@ -8,11 +8,11 @@
         <div class="table-container">
             <div class="table-responsive">
                 <table class="w-full table-fixed table-mobile sm:table" v-if="showSubscribers">
-                    <thead class="block w-full">
+                    <thead class="w-full">
                     <tr class="flex">
-                        <th class="px-4 py-2 flex-1-33">Name</th>
-                        <th class="px-4 py-2 flex-1-33">E-mail</th>
-                        <th class="px-4 py-2 flex-1-33">State</th>
+                        <th class="px-4 py-2 flex-1-33 w-33">Name</th>
+                        <th class="px-4 py-2 flex-1-33 w-33">E-mail</th>
+                        <th class="px-4 py-2 flex-1-33 w-33">State</th>
                     </tr>
                     </thead>
                     <tbody class="table-body">
@@ -21,9 +21,9 @@
                         v-for="subscriber in this.subscribers"
                         @click="showModalFor('subscriber', subscriber.id)"
                     >
-                        <td class="border px-4 py-2 hover:bg-gray-200 flex-1-33">{{ subscriber.name }}</td>
-                        <td class="border px-4 py-2 hover:bg-gray-200 flex-1-33">{{ subscriber.email }}</td>
-                        <td class="border px-4 py-2 hover:bg-gray-200 flex-1-33">{{ subscriber.state }}</td>
+                        <td class="table-body-row flex-1-33 w-33">{{ subscriber.name }}</td>
+                        <td class="table-body-row flex-1-33 w-33 break-all">{{ subscriber.email }}</td>
+                        <td class="table-body-row flex-1-33 w-33">{{ subscriber.state }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -40,8 +40,8 @@
                         v-for="field in this.fields"
                         @click="showModalFor('field', field.id)"
                     >
-                        <td class="border px-4 py-2 hover:bg-gray-200">{{ field.title }}</td>
-                        <td class="border px-4 py-2 hover:bg-gray-200">{{ field.type }}</td>
+                        <td class="table-body-row">{{ field.title }}</td>
+                        <td class="table-body-row">{{ field.type }}</td>
                     </tr>
                     </tbody>
                 </table>
