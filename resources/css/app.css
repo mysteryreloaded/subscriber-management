@@ -47,7 +47,7 @@ body {
 }
 
 .table-body {
-    @apply text-gray-600 font-bold text-center block w-full;
+    @apply text-gray-600 font-bold text-center w-full;
 }
 
 form input, form select {
