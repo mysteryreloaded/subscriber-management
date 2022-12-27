@@ -1,11 +1,11 @@
 <template>
-    <div class="flex flex-col justify-center items-center max-w-7xl h-full text-white mx-auto">
+    <div class="index-container">
         <h2 class="text-4xl my-12">{{ showSubscribers ? 'Subscriber Manager' : 'Field Manager' }}</h2>
         <div class="flex justify-around items-center w-full">
             <button :class="showSubscribers ? 'blue-3d-button active' : 'blue-3d-button'" @click="showSubscribers = !showSubscribers" :disabled="showSubscribers">Show Subscribers</button>
             <button :class="!showSubscribers ? 'blue-3d-button active' : 'blue-3d-button'" @click="showSubscribers = !showSubscribers" :disabled="!showSubscribers">Show Fields</button>
         </div>
-        <div class="w-full border-red-500/50 rounded-lg shadow-2xl mb-12 p-2 lg:p-8">
+        <div class="table-container">
             <div class="table-responsive">
                 <table class="w-full table-fixed table-mobile sm:table" v-if="showSubscribers">
                     <thead class="block w-full">
@@ -15,7 +15,7 @@
                         <th class="px-4 py-2 flex-1-33">State</th>
                     </tr>
                     </thead>
-                    <tbody class="text-gray-600 font-bold text-center block w-full">
+                    <tbody class="table-body">
                     <tr
                         class="bg-gray-100 cursor-pointer flex"
                         v-for="subscriber in this.subscribers"
@@ -58,9 +58,9 @@
             </template>
             <template #body v-if="modalData.subscriber">
                 <div class="mt-5 md:col-span-2 md:mt-0">
-                    <form action="#" method="POST" @click.prevent="">
-                        <div class="overflow-hidden shadow sm:rounded-md">
-                            <div class="bg-white px-4 py-5 sm:p-6">
+                    <form action="#" method="POST">
+                        <div class="overflow-hidden shadow sm:rounded-md border">
+                            <div class="bg-white p-6">
                                 <div class="grid gap-6">
                                     <div class="col-span-6">
                                         <label for="name" class="block font-medium text-gray-700">Name</label>
@@ -82,6 +82,7 @@
                                         <Multiselect
                                             v-model="subscriberForm.fields"
                                             :value-prop="'id'"
+                                            :open-direction="subscriberForm.fields.length <= 1 ? 'top' : 'bottom'"
                                             :mode="'multiple'"
                                             :searchable="true"
                                             :label="'title'"
@@ -114,7 +115,7 @@
             </template>
             <template #body v-else>
                 <div class="mt-5 md:col-span-2 md:mt-0">
-                    <form action="#" method="POST" @click.prevent="">
+                    <form action="#" method="POST">
                         <div class="overflow-hidden shadow sm:rounded-md">
                             <div class="bg-white px-4 py-5 sm:p-6">
                                 <div class="grid gap-6">
@@ -261,13 +262,10 @@ export default {
                 let subscriber = _.cloneDeep(this.subscribers.find(sub => {
                     return sub.id === this.modalData.id;
                 }));
-                console.log(this.subscriberForm);
-                console.log(subscriber, subscriber.email);
                 this.subscriberForm.name = subscriber.name;
                 this.subscriberForm.email = subscriber.email;
                 this.subscriberForm.state = subscriber.state;
                 this.subscriberForm.fields = subscriber.fields;
-                console.log(this.subscriberForm);
             } else if (isEditMode && !this.modalData.subscriber) {
                 let field = this.fields.find(f => {
                     return f.id === this.modalData.id;

@@ -10,7 +10,7 @@ export default {
     <Transition name="modal">
         <div v-if="show" class="modal-mask">
             <div class="modal-wrapper">
-                <div class="modal-container md:w-45" @click.stop="">
+                <div class="modal-container md:w-45">
                     <div class="modal-header text-2xl text-center mb-8 flex justify-between">
                         <slot name="header">default header</slot>
                         <button @click="$emit('close')">X</button>

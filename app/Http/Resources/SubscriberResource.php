@@ -29,14 +29,15 @@ class SubscriberResource extends JsonResource
     {
         $items = [
             'id' => $this->id,
-            'email' => $this->email,
             'name' => $this->name,
+            'email' => $this->email,
             'state' => $this->state,
             'fields' => $this->fields,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
 
+        /** Code below is responsible for adding 'value' to each 'fields' array item for this particular subscriber */
         foreach ($items['fields'] as $key => $field) {
             $items['fields'][$key]['value'] = $field->pivot->value;
         }

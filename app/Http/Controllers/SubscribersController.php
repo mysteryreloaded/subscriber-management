@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SubscriberStoreRequest;
 use App\Http\Requests\SubscriberUpdateRequest;
 use App\Http\Resources\SubscriberResource;
+use App\Models\Field;
 use App\Models\Subscriber;
 use Illuminate\Http\JsonResponse;
 
@@ -46,10 +47,14 @@ class SubscribersController extends Controller
             $fields = $data['fields'];
             unset($data['fields']);
 
-            /** Make an array that can be accepted by sync() function. Example result: field_id => ['value' => 'some value...'] */
+            /** Make an array that can be accepted by sync() function. Expected result: field_id => ['value' => 'some value...'] */
             $fieldsForSync = array_combine(array_column($fields, 'id'), array_column($fields, 'value'));
             foreach ($fieldsForSync as $id => $value) {
-                $fieldsForSync[$id] = ['value' => $value];
+                if (!is_null(Field::find($id))) {
+                    $fieldsForSync[$id] = ['value' => $value];
+                } else {
+                    unset($fieldsForSync[$id]);
+                }
             }
         }
 

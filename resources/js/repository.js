@@ -16,10 +16,15 @@ class Repository {
             .then(resp => {
                 return resp;
             }).catch(error => {
-                if (error.code === 'ERR_BAD_REQUEST') {
-                    alert('Please fill in all values correctly.');
-                }
-                return false;
+                let errorResponse = JSON.parse(error.request.response);
+                let errorMessageArray = Object.values(errorResponse.errors);
+                let errorMessage = '';
+
+                errorMessageArray.forEach(err => {
+                    errorMessage += err[0] + '\n';
+                });
+
+                alert(errorMessage);
             });
     }
 

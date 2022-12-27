@@ -40,8 +40,7 @@ class InitDataSeeder extends Seeder
         ];
 
         foreach ($fieldsData as $row) {
-            $field = new Field();
-            $field->fill($row)->save();
+            (new Field())->fill($row)->save();
         }
 
         foreach ($subscribersData as $row) {
