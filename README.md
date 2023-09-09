@@ -47,13 +47,6 @@ We also ask you to create a tiny client for your API using Vue.js. You can use a
 * Ensure the project works with artisan's built-in web server (`artisan serve`)
 * Document setup instructions in a README file.
 * Please provide a link to the hosted project OR a screen recording of it in action - whichever is more convenient. This will serve as a reference point if there are problems running the project locally.
-
-## Final steps
-
-* Create a private repository on GitHub
-* Give GitHub user `tadaspaplauskas` permissions to view it
-* Send the repository link to jobs@mailerlite.com
-
 ______________________________________________________________________
 
 # Install 'Subscriber Management App' in just a few steps:
@@ -70,7 +63,7 @@ ______________________________________________________________________
 - Run `php artisan serve`
 - Visit the app by using link provided by the last command (usually it's `127.0.0.1:8000`)
 - [optional] Run `php artisan test` and you should see 11 tests that have passed.
-- In case of encountering technical difficulties during local deployment you can check out live production app: https://mailerlite.zetasoft.io
+- In case of encountering technical difficulties during local deployment you can check out live production app: https://textbook.zetasoft.io
   - This deployment is hosted on a raspberry pi 4 device with a single location in Serbia, therefore your requests will likely have ~1000ms timeout (depending on your location).
-  - Local deployment using steps above will provide better user experience
+  - Local deployment (or AWS / DigitalOcean) using steps above will provide far better user experience
 ______________________________________________________________________
