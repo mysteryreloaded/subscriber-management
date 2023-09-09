@@ -28,13 +28,18 @@ class SubscriberUpdateRequest extends FormRequest
     public function rules()
     {
         $email = $this->request->get('email');
-        return [
+        $rules = [
             'name' => 'sometimes|string|max:255',
             'email' => ['sometimes', 'email', 'max:255', Rule::unique(Subscriber::TABLE)->ignore($email, 'email')],
             'state' => ['sometimes', new Enum(SubscriberStateEnum::class)],
             'fields' => 'array',
             'fields.*' => 'required|distinct',
         ];
+
+        if (count($this->fields) !== 0) {
+            $rules['fields.*.value'][] = 'required';
+        }
+        return $rules;
     }
 
     /**
@@ -46,6 +51,7 @@ class SubscriberUpdateRequest extends FormRequest
     {
         return [
             'state' => 'Valid values for state field are: `active`, `unsubscribed`, `junk`, `bounced` and `unconfirmed`',
+            'fields.*.value' => 'Field value is required.'
         ];
     }
 }

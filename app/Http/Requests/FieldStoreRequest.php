@@ -27,6 +27,7 @@ class FieldStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
+            'value' => 'required|max:255',
             'type' => ['required', new Enum(FieldTypeEnum::class)],
         ];
     }

@@ -25,13 +25,18 @@ class SubscriberStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:subscribers,email',
             'state' => ['required', new Enum(SubscriberStateEnum::class)],
             'fields' => 'array',
             'fields.*' => 'required|distinct',
         ];
+
+        if (count($this->fields) !== 0) {
+            $rules['fields.*.value'][] = 'required';
+        }
+        return $rules;
     }
 
     /**
@@ -43,6 +48,7 @@ class SubscriberStoreRequest extends FormRequest
     {
         return [
             'state' => 'Valid values for state field are: `active`, `unsubscribed`, `junk`, `bounced` and `unconfirmed`',
+            'fields.*.value' => 'Field value is required.'
         ];
     }
 }

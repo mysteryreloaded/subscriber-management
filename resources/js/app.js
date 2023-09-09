@@ -4,12 +4,15 @@ import { createApp } from 'vue/dist/vue.esm-bundler';
 import IndexPage from './Components/IndexPage.vue';
 import Modal from './Components/Modal.vue';
 
-createApp({
+const app = createApp({
     components: {
         IndexPage,
         Modal,
     }
-})
-    .component('page-index', IndexPage)
-    .component('modal', Modal)
-    .mount('#app');
+});
+
+app.component('page-index', IndexPage)
+app.component('modal', Modal)
+app.mount('#app');
+
+window.app = app;

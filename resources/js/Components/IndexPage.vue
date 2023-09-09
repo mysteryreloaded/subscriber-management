@@ -204,9 +204,11 @@ export default {
             },
             fieldForm: {
                 title: null,
+                value: null,
                 type: null,
             },
-            fieldOptions: this.fieldsData
+            fieldOptions: this.fieldsData,
+            error: false,
         }
     },
     computed: {
@@ -217,6 +219,16 @@ export default {
     methods: {
         async submit() {
             let formData = this.modalData.subscriber ? this.subscriberForm : this.fieldForm;
+            if (this.modalData.subscriber) {
+                this.subscriberForm.fields.forEach((item) => {
+                    if (!item.hasOwnProperty('value')) {
+                        item.value = null;
+                    }
+                });
+                formData = this.subscriberForm;
+            } else {
+                formData = this.fieldForm;
+            }
             let routePrefix = this.modalData.subscriber ? 'sub-' : 'field-';
             let submitUrl = this.isEditMode ? this.routes[routePrefix + 'update'].replace('_ID_', this.modalData.id) : this.routes[routePrefix + 'store'];
 
@@ -224,10 +236,12 @@ export default {
                 formData['_method'] = 'PUT';
             }
 
-            await Repository.postWithFullResponse(submitUrl, formData);
-            await this.update(routePrefix);
+            this.error = typeof await Repository.postWithFullResponse(submitUrl, formData) === 'undefined';
+            if (!this.error) {
+                await this.update(routePrefix);
+                this.closeModal();
+            }
 
-            this.closeModal();
         },
         async destroy() {
             let routePrefix = 'field-';
@@ -236,10 +250,12 @@ export default {
             }
 
             let submitUrl = this.routes[routePrefix + 'destroy'].replace('_ID_', this.modalData.id);
-            await Repository.postWithFullResponse(submitUrl, {_method: 'DELETE'});
-            await this.update(routePrefix);
+            this.error = typeof await Repository.postWithFullResponse(submitUrl, {_method: 'DELETE'}) === 'undefined';
+            if (!this.error) {
+                await this.update(routePrefix);
+                this.closeModal();
+            }
 
-            this.closeModal();
         },
         async update(routePrefix) {
             let updated = await Repository.get(this.routes[routePrefix + 'index']);

@@ -27,6 +27,7 @@ class FieldUpdateRequest extends FormRequest
     {
         return [
             'title' => 'sometimes|string|max:255',
+            'value' => 'required|max:255',
             'type' => ['sometimes', new Enum(FieldTypeEnum::class)],
         ];
     }
